@@ -1,12 +1,14 @@
 const express = require('express');
 const http = require('http');
+const dotenv = require('dotenv');
+dotenv.config();
 const path = require('path');
 const twitter = require('twitter');
 const client = new twitter({
-  consumer_key: '4GPwHfBBPsaREYpU4F1Dz1zOH',
-  consumer_secret: 'CxTqIUN1bm2OTj59uEiOZJMU8AweQrERyp4qLLsD3YPGjORZbB',
-  access_token_key: '2523818257-rZrY988wal9Xih3pdjZ0GARFtC2skC7PA5iA7KY',
-  access_token_secret: 'bkRdxcA4LFQTBPRv9wyFm8cflsw2KIH90VmJBiRkhLFgA'
+  consumer_key: process.env.CONSUMER,
+  consumer_secret: process.env.CONSUMER_SECRET,
+  access_token_key: process.env.ACCESS_TOKEN,
+  access_token_secret: process.env.ACCESS_TOKEN_SECRET
 });
 
 
