@@ -30,6 +30,7 @@ app.get('/api/count', (req,res) => {
       res.send(word_count);
     }
     else {
+      res.send(error);
       throw error;
     }
  });
