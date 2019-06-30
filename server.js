@@ -11,6 +11,7 @@ const client = new twitter({
   access_token_secret: process.env.ACCESS_TOKEN_SECRET
 });
 
+console.log(process.env);
 
 const app = express();
 
