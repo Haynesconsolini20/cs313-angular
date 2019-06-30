@@ -21,11 +21,17 @@ app.use(express.static(__dirname + '/dist/cs313'));
 app.get('/api/count', (req,res) => {
   let search = req.query.search;
   client.get('search/tweets', {q: search}, function(error, tweets, response) {
-    //console.log(tweets);
-    word_count = wordCount(tweets);
-    //console.log(word_count.slice(0,5));
-    console.log("sending response");
-    res.send(word_count);
+    if (!error) {
+      console.log(tweets);
+      console.log(response);
+      word_count = wordCount(tweets);
+      //console.log(word_count.slice(0,5));
+      console.log("sending response");
+      res.send(word_count);
+    }
+    else {
+      throw error;
+    }
  });
 });
 app.get('/api/test', (req,res) => {
