@@ -10,8 +10,11 @@ const client = new twitter({
   access_token_key: process.env.ACCESS_TOKEN,
   access_token_secret: process.env.ACCESS_TOKEN_SECRET
 });
+var Sentiment = require('sentiment');
+var sentiment = new Sentiment();
+const stop_words = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now", "RT"];
 
-console.log(process.env);
+//console.log(process.env);
 
 const app = express();
 
@@ -21,11 +24,12 @@ app.use(express.static(__dirname + '/dist/cs313'));
 
 app.get('/api/count', (req,res) => {
   let search = req.query.search;
-  client.get('search/tweets', {q: search}, function(error, tweets, response) {
+  console.log("word count call beginning");
+  client.get('search/tweets', {q: search, count: 100, result_type: 'popular'}, function(error, tweets, response) {
     if (!error) {
-      console.log(tweets);
-      console.log(response);
-      word_count = wordCount(tweets);
+      //console.log(tweets);
+      //console.log(response);
+      word_count = wordCount(tweets,search);
       //console.log(word_count.slice(0,5));
       console.log("sending response");
       res.send(word_count);
@@ -35,6 +39,25 @@ app.get('/api/count', (req,res) => {
       throw error;
     }
  });
+});
+app.get('/api/sentiment', (req,res) => {
+  let search = req.query.search;
+  console.log("sentiment call beginning");
+  client.get('search/tweets', {q: search, count: 99, result_type: 'popular'}, function(error, tweets, response) {
+    if (!error) {
+      //console.log(tweets);
+      //console.log(response);
+      sentiment_scores = sentimentAnalysis(tweets);
+      //console.log(word_count.slice(0,5));
+      console.log("sending response");
+      res.send(sentiment_scores);
+    }
+    else {
+      res.send(error);
+      throw error;
+    }
+ });
+
 });
 app.get('/api/test', (req,res) => {
   res.send("houston we have landed");
@@ -51,7 +74,7 @@ server.listen(port,() => {
 
 
 function twitterGetCounts(query) {
-  client.get('search/tweets', {q: 'node.js'}, function(error, tweets, response) {
+  client.get('search/tweets', {q: 'node.js', count: 100, result_type: 'popular'}, function(error, tweets, response) {
     //console.log(tweets);
     word_count = wordCount(tweets);
     //console.log(word_count.slice(0,5));
@@ -62,7 +85,23 @@ function twitterGetCounts(query) {
 /*********************************************
  * DATA HANDLING
  *********************************************/
-function wordCount(tweets) {
+function sentimentAnalysis(tweets) {
+  var sentiment_scores = { average: 0, scores: []};
+  var scores_total = 0;
+  var scores_count = 0;
+  tweets.statuses.forEach(element => {
+    scores_count++;
+    var score = Number(sentiment.analyze(element.text).score);
+    scores_total += score;
+    sentiment_scores.scores.push(score);
+  });
+  console.log(scores_total);
+  console.log(scores_count);
+  sentiment_scores.average = scores_total / scores_count;
+  console.log(sentiment_scores);
+  return sentiment_scores;
+}
+function wordCount(tweets,searchQuery) {
   var dict = {};
   tweets.statuses.forEach(element => {
       text = element.text;
@@ -78,8 +117,9 @@ function wordCount(tweets) {
   });
   //Filter out words that are known to show up
  Object.keys(dict).forEach(element => {
-     //console.log(element + "(length "+ element.length + ": " + dict[element]);
-     if (element.length < 2) {
+     searchQuery = searchQuery.toLowerCase();
+     if (stop_words.indexOf(element.toLowerCase()) > -1) {
+        console.log("found " + element + " in stop words");
          delete dict[element];
      }
  });
