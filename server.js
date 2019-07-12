@@ -73,6 +73,7 @@ app.get('/db/get', async (req, res) => {
     const client = await pool.connect()
     const result = await client.query('SELECT * FROM queries');
     const results = { 'results': (result) ? result.rows : null};
+    console.log("db get complete");
     console.log(results);
     client.release();
     res.send(results);
@@ -87,6 +88,7 @@ app.post('/db/post', async (req, res) => {
     const client = await pool.connect()
     const result = await client.query('INSERT INTO queries (query_text) VALUES (\''+query+'\')');
     const results = { 'results': (result) ? result.rows : null};
+    console.log("db post complete");
     console.log(results);
     client.release();
     res.send(results);

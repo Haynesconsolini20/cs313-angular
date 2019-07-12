@@ -18,10 +18,13 @@ export class SearchBarComponent implements OnInit {
   }
 
   updateOptions(results): void {
+    console.log('updating options');
     this.options = [];
     for (const row of results) {
       this.options.push(row.query_text);
     }
+    console.log('updated options: ');
+    console.log(this.options);
   }
   constructor(private twitterSearchService: TwitterSearchService) { }
 
