@@ -68,10 +68,24 @@ app.get('/api/sentiment', (req,res) => {
 app.get('/api/test', (req,res) => {
   res.send("houston we have landed");
 });
-app.get('/db', async (req, res) => {
+app.get('/db/get', async (req, res) => {
   try {
     const client = await pool.connect()
     const result = await client.query('SELECT * FROM queries');
+    const results = { 'results': (result) ? result.rows : null};
+    console.log(results);
+    client.release();
+    res.send(results);
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
+app.post('/db/post', async (req, res) => {
+  try {
+    const query = req.query.search
+    const client = await pool.connect()
+    const result = await client.query('INSERT INTO queries (query_text) VALUES (\''+query+'\')');
     const results = { 'results': (result) ? result.rows : null};
     console.log(results);
     client.release();
