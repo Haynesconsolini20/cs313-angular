@@ -27,6 +27,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 app.use(express.static(__dirname + '/dist/cs313'));
+app.set('view engine', 'jade');
 
 app.get('/api/count', (req,res) => {
   let search = req.query.search;
