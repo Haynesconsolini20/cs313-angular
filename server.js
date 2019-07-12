@@ -27,8 +27,8 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 app.use(express.static(__dirname + '/dist/cs313'));
-app.set('view engine', 'jade');
-
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 app.get('/api/count', (req,res) => {
   let search = req.query.search;
   console.log("word count call beginning");
