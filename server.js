@@ -23,8 +23,6 @@ const stop_words = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves",
 //console.log(process.env);
 
 const app = express();
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
 
 const port = process.env.PORT || 8080;
 
@@ -75,7 +73,7 @@ app.get('/db', async (req, res) => {
     const client = await pool.connect()
     const result = await client.query('SELECT * FROM queries');
     const results = { 'results': (result) ? result.rows : null};
-    res.render('pages/db', results );
+    console.log(results);
     client.release();
   } catch (err) {
     console.error(err);
