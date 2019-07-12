@@ -21,6 +21,7 @@ export class SearchBarComponent implements OnInit {
     console.log('updating options');
     console.log(results);
     for(let i = 0; i < results.length; i++) {
+      console.log('query text: ' + results.i.query_text);
       this.options.push(results.i.query_text);
     }
     console.log('updated options: ');
