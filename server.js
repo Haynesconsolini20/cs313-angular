@@ -23,12 +23,13 @@ const stop_words = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves",
 //console.log(process.env);
 
 const app = express();
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 
 const port = process.env.PORT || 8080;
 
 app.use(express.static(__dirname + '/dist/cs313'));
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
+
 app.get('/api/count', (req,res) => {
   let search = req.query.search;
   console.log("word count call beginning");
