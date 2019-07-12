@@ -20,7 +20,9 @@ export class SearchBarComponent implements OnInit {
   updateOptions(results): void {
     console.log('updating options');
     console.log(results);
-    this.options = ['bummer'];
+    for(let i = 0; i < results.length; i++) {
+      this.options.push(results.i.query_text);
+    }
     console.log('updated options: ');
     console.log(this.options);
   }
