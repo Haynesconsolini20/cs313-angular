@@ -9,7 +9,7 @@ import { WordCountComponent } from './word-count/word-count.component';
 import { SentimentComponent } from './sentiment/sentiment.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { TwitterSearchService } from './twitter-search.service';
-import { MatInputModule, MatButtonModule, MatGridListModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatGridListModule, MatAutocompleteModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,8 @@ import { MatInputModule, MatButtonModule, MatGridListModule } from '@angular/mat
     FormsModule,
     MatInputModule,
     MatButtonModule,
-    MatGridListModule
+    MatGridListModule,
+    MatAutocompleteModule
   ],
   providers: [
     TwitterSearchService

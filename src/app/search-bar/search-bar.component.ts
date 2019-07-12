@@ -9,15 +9,28 @@ import { TwitterSearchService } from '../twitter-search.service';
 export class SearchBarComponent implements OnInit {
   searchQuery: string;
   results: string;
+  options: string[];
 
   search(): void {
     this.twitterSearchService.query(this.searchQuery);
     this.results = 'function called';
     console.log('search called');
   }
+
+  updateOptions(results): void {
+    this.options = [];
+    for (const row of results) {
+      this.options.push(row.query_text);
+    }
+  }
   constructor(private twitterSearchService: TwitterSearchService) { }
 
   ngOnInit() {
+    this.twitterSearchService.queries.subscribe(
+      value => {
+        this.updateOptions(value);
+      }
+    )
   }
 
 }

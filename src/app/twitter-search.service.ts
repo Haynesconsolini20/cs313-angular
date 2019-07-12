@@ -11,6 +11,7 @@ export class TwitterSearchService {
   search: string;
   sentiment: any;
   wordCount: any;
+  queries: any;
 
 
   getWords(): void {
@@ -38,16 +39,37 @@ export class TwitterSearchService {
     );
   }
 
+  getQueries(): void {
+    console.log('get queries called');
+    this.httpClient.get('/db/get').subscribe(
+      value => {
+        this.queries.next(value);
+      },
+      error => {
+        console.log(error.message);
+      }
+    );
+  }
+
+  postQueries(): void {
+    console.log('post queries called');
+    this.httpClient.post('/db/post?search=' + this.search, '');
+  }
+
   query(search: string): void {
     this.search = search;
     console.log('query called');
     this.getWords();
     this.getScores();
+    this.postQueries();
+    this.getQueries();
+
   }
 
   constructor(private httpClient: HttpClient) {
       this.sentiment = new BehaviorSubject(1);
       this.wordCount = new BehaviorSubject(1);
+      this.queries = new BehaviorSubject(1);
       this.query('test');
    }
 }
