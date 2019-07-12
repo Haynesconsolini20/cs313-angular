@@ -75,6 +75,7 @@ app.get('/db', async (req, res) => {
     const results = { 'results': (result) ? result.rows : null};
     console.log(results);
     client.release();
+    res.send(results);
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
