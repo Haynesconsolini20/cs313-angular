@@ -31,6 +31,9 @@ export class SearchBarComponent implements OnInit {
   ngOnInit() {
     this.twitterSearchService.queries.subscribe(
       value => {
+        console.log("*****************RESULTS*****************");
+        console.log(value);
+        console.log('*****************************************')
         this.updateOptions(value.results);
       },
       error => {
