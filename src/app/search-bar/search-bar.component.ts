@@ -33,8 +33,8 @@ export class SearchBarComponent implements OnInit {
       value => {
         console.log("*****************RESULTS*****************");
         console.log(value);
-        console.log('*****************************************')
-        this.updateOptions(value.results);
+        console.log('*****************************************');
+        if (value !== 1) { this.updateOptions(value.results); }
       },
       error => {
         console.log(error.message);
