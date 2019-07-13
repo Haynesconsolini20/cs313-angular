@@ -53,7 +53,14 @@ export class TwitterSearchService {
 
   postQueries(): void {
     console.log('post queries called');
-    this.httpClient.post('/db/post?search=' + this.search, '');
+    this.httpClient.post('/db/post?search=' + this.search, '').subscribe(
+      value => {
+        console.log(value);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   query(search: string): void {
