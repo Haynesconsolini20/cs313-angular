@@ -71,7 +71,7 @@ app.get('/api/test', (req,res) => {
 app.get('/db/get', async (req, res) => {
   try {
     const client = await pool.connect()
-    const result = await client.query('SELECT query_text FROM queries');
+    const result = await client.query('SELECT DISTINCT query_text FROM queries');
     const results = { 'results': (result) ? result.rows : null};
     console.log("db get complete");
     console.log(results);

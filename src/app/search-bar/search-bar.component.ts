@@ -18,6 +18,7 @@ export class SearchBarComponent implements OnInit {
   }
 
   updateOptions(results): void {
+    this.options = [];
     console.log('updating options');
     console.log(results);
     results.forEach(element => {
