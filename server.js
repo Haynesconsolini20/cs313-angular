@@ -121,6 +121,7 @@ function twitterGetCounts(query) {
 /*********************************************
  * DATA HANDLING
  *********************************************/
+
 function sentimentAnalysis(tweets) {
   var sentiment_scores = { average: 0, scores: []};
   var scores_total = 0;
@@ -155,7 +156,7 @@ function wordCount(tweets,searchQuery) {
  Object.keys(dict).forEach(element => {
      searchQuery = searchQuery.toLowerCase();
      if (stop_words.indexOf(element.toLowerCase()) > -1) {
-        console.log("found " + element + " in stop words");
+        //console.log("found " + element + " in stop words");
          delete dict[element];
      }
  });
