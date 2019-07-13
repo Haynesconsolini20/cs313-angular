@@ -20,10 +20,9 @@ export class SearchBarComponent implements OnInit {
   updateOptions(results): void {
     console.log('updating options');
     console.log(results);
-    for(let row of results.results) {
-      console.log('query text: ' + row.query_text);
-      this.options.push(row.query_text);
-    }
+    results.forEach(element => {
+      this.options.push(element.query_text);
+    });
     console.log('updated options: ');
     console.log(this.options);
   }
@@ -32,7 +31,10 @@ export class SearchBarComponent implements OnInit {
   ngOnInit() {
     this.twitterSearchService.queries.subscribe(
       value => {
-        this.updateOptions(value);
+        this.updateOptions(value.results);
+      },
+      error => {
+        console.log(error.message);
       }
     )
   }
