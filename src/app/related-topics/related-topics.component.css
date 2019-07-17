@@ -1,6 +1,9 @@
 h1, ul {
   font-family: “Calibri, Optima, Candara, Verdana, Geneva, sans-serif”;
 }
+ul {
+  font-size:1.25em;
+}
 div {
   align-content: center;
   padding: 5px;

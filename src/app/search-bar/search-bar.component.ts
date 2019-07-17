@@ -24,6 +24,7 @@ export class SearchBarComponent implements OnInit {
     results.forEach(element => {
       this.options.push(element.query_text);
     });
+    this.options = this.options.slice(0,5);
     console.log('updated options: ');
     console.log(this.options);
   }
