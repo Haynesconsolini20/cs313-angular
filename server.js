@@ -92,7 +92,7 @@ app.get('/api/tweets', (req, res) => {
 app.get('/db/get', async (req, res) => {
   try {
     const client = await pool.connect()
-    const result = await client.query('SELECT DISTINCT query_text FROM queries ORDER BY query_date DESC');
+    const result = await client.query('SELECT DISTINCT query_text, query_date FROM queries ORDER BY query_date DESC');
     const results = {
       'results': (result) ? result.rows : null
     };
