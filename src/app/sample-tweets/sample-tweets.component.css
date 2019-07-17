@@ -1,0 +1,10 @@
+h1, p {
+  font-family: “Calibri, Optima, Candara, Verdana, Geneva, sans-serif”;
+}
+p {
+  font-size: 20px;
+}
+div {
+  align-content: center;
+  padding: 5px;
+}

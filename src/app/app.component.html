@@ -1,6 +1,18 @@
+<div class="content">
 <app-search-bar></app-search-bar>
-<mat-grid-list cols="2">
-  <mat-grid-tile><app-word-count></app-word-count></mat-grid-tile>
-  <mat-grid-tile><app-sentiment></app-sentiment></mat-grid-tile>
+<mat-grid-list cols="4" rowHeight="26em" gutterSize="1em">
+  <mat-grid-tile [colspan]="3" [rowspan]="1">
+    <app-word-count></app-word-count>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="2">
+    <app-sample-tweets></app-sample-tweets>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <app-related-topics></app-related-topics>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <app-sentiment></app-sentiment>
+  </mat-grid-tile>
 </mat-grid-list>
+</div>
 <router-outlet></router-outlet>

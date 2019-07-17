@@ -18,10 +18,36 @@ export class SentimentComponent implements OnInit {
   values: number[];
   chart: CanvasJS.Chart;
 
-  getScores(): void {
-    this.twitterSearchService.query('test');
-  }
+  updatePieChart(): void {
+    let dataPoints = [ {y: 0, label: 'Positive'},
+                       {y: 0, label: 'Neutral'},
+                       {y: 0, label: 'Negative'}];
+    let positive = 0;
+    let neutral = 0;
+    let negative = 0;
+    this.scores.forEach(element => {
+      if (element > 0) {
+        positive += 1;
+      }
+      else if (element === 0) {
+        neutral += 1;
+      }
+      else {
+        negative += 1;
+      }
+    });
+    const total = positive+neutral+negative;
+    positive = positive/total;
+    neutral = neutral / total;
+    negative = negative / total;
+    dataPoints[0].y = Number(positive.toFixed(2));
+    dataPoints[1].y = Number(neutral.toFixed(2));
+    dataPoints[2].y = Number(negative.toFixed(2));
+    this.chart.options.data[0].dataPoints = dataPoints;
+    console.log(dataPoints);
+    this.chart.render();
 
+  }
   updateChart(): void {
     let jstat = jStat(this.scores);
     const quartiles = jstat.quartiles();
@@ -37,7 +63,7 @@ export class SentimentComponent implements OnInit {
   ngOnInit() {
     this.chart = new CanvasJS.Chart('chartContainerSentiment', {
       animationEnabled: true,
-      exportEnabled: true,
+      exportEnabled: false,
       axisY: {
         text: 'Sentiment Scores'
       },
@@ -46,19 +72,23 @@ export class SentimentComponent implements OnInit {
       },
       data: [
       {
-        type: 'boxAndWhisker',
-        color: "black",
-		    dataPoints: this.dataPoints
+        type: 'pie',
+        showInLegend: true,
+        legendText: '{label} {y}',
+        dataPoints: this.dataPoints
       }
       ]
+
 	  });
     this.chart.render();
     this.twitterSearchService.sentiment.subscribe(
       value => {
-        console.log('sentiment updated');
-        this.scores = value.scores;
-        this.avgScore = value.average;
-        this.updateChart();
+        if (value != 1) {
+          console.log('sentiment updated');
+          this.scores = value.scores;
+          this.avgScore = value.average;
+          this.updatePieChart();
+        }
       },
       error => {
         throw error.message;

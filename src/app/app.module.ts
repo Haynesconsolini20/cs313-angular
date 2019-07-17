@@ -10,6 +10,8 @@ import { SentimentComponent } from './sentiment/sentiment.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { TwitterSearchService } from './twitter-search.service';
 import { MatInputModule, MatButtonModule, MatGridListModule, MatAutocompleteModule } from '@angular/material';
+import { RelatedTopicsComponent } from './related-topics/related-topics.component';
+import { SampleTweetsComponent } from './sample-tweets/sample-tweets.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { MatInputModule, MatButtonModule, MatGridListModule, MatAutocompleteModu
     WordCountComponent,
     SentimentComponent,
     SearchBarComponent,
+    RelatedTopicsComponent,
+    SampleTweetsComponent,
   ],
   imports: [
     BrowserModule,

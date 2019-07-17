@@ -33,7 +33,7 @@ export class WordCountComponent implements OnInit {
   ngOnInit() {
     this.chart = new CanvasJS.Chart("chartContainerWord", {
       animationEnabled: true,
-      exportEnabled: true,
+      exportEnabled: false,
       title: {
         text: "Words with highest recurrance"
       },
