@@ -15,9 +15,7 @@ export class WordCountComponent implements OnInit {
   searchQuery: string;
   chart: CanvasJS.Chart;
 
-  // Recreate chart based on new words data
   updateChart(): void {
-// tslint:disable-next-line: forin
     this.wordData = [];
     for(let item of this.words) {
       this.wordData.push({y:item[1], label: item[0]});
@@ -29,7 +27,6 @@ export class WordCountComponent implements OnInit {
 
   constructor(private twitterSearchService: TwitterSearchService) { }
 
-  // Get an initial word count and initialize the chart
   ngOnInit() {
     this.chart = new CanvasJS.Chart("chartContainerWord", {
       animationEnabled: true,

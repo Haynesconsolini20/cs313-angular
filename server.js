@@ -3,7 +3,6 @@ const http = require('http');
 const dotenv = require('dotenv');
 dotenv.config();
 const path = require('path');
-const request = require('request');
 const twitter = require('twitter');
 const client = new twitter({
   consumer_key: process.env.CONSUMER,
@@ -37,7 +36,6 @@ app.get('/api/count', (req, res) => {
   }, function (error, tweets, response) {
     if (!error) {
       word_count = wordCount(tweets, search);
-      console.log("sending response");
       res.send(word_count);
     } else {
       res.send(error);
@@ -48,17 +46,12 @@ app.get('/api/count', (req, res) => {
 
 app.get('/api/sentiment', (req, res) => {
   let search = req.query.search;
-  console.log("sentiment call beginning");
   client.get('search/tweets', {
     q: search,
     count: 100
   }, function (error, tweets, response) {
     if (!error) {
-      //console.log(tweets);
-      //console.log(response);
       sentiment_scores = sentimentAnalysis(tweets);
-      //console.log(word_count.slice(0,5));
-      console.log("sending response");
       res.send(sentiment_scores);
     } else {
       res.send(error);
@@ -68,17 +61,12 @@ app.get('/api/sentiment', (req, res) => {
 });
 app.get('/api/related', (req, res) => {
   let search = req.query.search;
-  console.log("related call beginning");
   client.get('search/tweets', {
     q: search,
     count: 100
   }, function (error, tweets, response) {
     if (!error) {
-      //console.log(tweets);
-      //console.log(response);
       topics = relatedTopics(tweets);
-      //console.log(word_count.slice(0,5));
-      console.log("topics were: " + topics);
       res.send(topics);
     } else {
       res.send(error);
@@ -88,16 +76,11 @@ app.get('/api/related', (req, res) => {
 });
 app.get('/api/tweets', (req, res) => {
   let search = req.query.search;
-  console.log("tweets call beginning");
   client.get('search/tweets', {
     q: search,
     count: 5
   }, function (error, tweets, response) {
     if (!error) {
-      //console.log(tweets);
-      //console.log(response);
-      //console.log(word_count.slice(0,5));
-      console.log("tweets were: " + tweets.statuses);
       res.send(tweets.statuses);
     } else {
       res.send(error);
@@ -105,9 +88,7 @@ app.get('/api/tweets', (req, res) => {
     }
   });
 });
-app.get('/api/test', (req, res) => {
-  res.send("houston we have landed");
-});
+
 app.get('/db/get', async (req, res) => {
   try {
     const client = await pool.connect()
@@ -115,8 +96,6 @@ app.get('/db/get', async (req, res) => {
     const results = {
       'results': (result) ? result.rows : null
     };
-    console.log("db get complete");
-    console.log(results);
     client.release();
     res.send(results);
   } catch (err) {
@@ -132,12 +111,9 @@ app.post('/db/post', async (req, res) => {
     const results = {
       'results': (result) ? result.rows : null
     };
-    console.log("db post complete");
-    console.log(results);
     client.release();
     res.send(results);
   } catch (err) {
-    console.error(err);
     res.send("Error " + err);
   }
 });
@@ -172,10 +148,7 @@ function sentimentAnalysis(tweets) {
     scores_total += score;
     sentiment_scores.scores.push(score);
   });
-  console.log(scores_total);
-  console.log(scores_count);
   sentiment_scores.average = scores_total / scores_count;
-  console.log(sentiment_scores);
   return sentiment_scores;
 }
 
@@ -211,13 +184,6 @@ function relatedTopics(tweets) {
  items.sort(function(first, second) {
      return second[1] - first[1];
  });
- console.log(items.slice(0,5));
-
- // Convert back into dict for json
- json_topics = {};
- items.forEach(element=> {
-   json_topics[element[0]] = element[1];
- })
  return items.slice(0,5);
 }
 function wordCount(tweets, searchQuery) {
@@ -238,7 +204,6 @@ function wordCount(tweets, searchQuery) {
   Object.keys(dict).forEach(element => {
     searchQuery = searchQuery.toLowerCase();
     if (stop_words.indexOf(element.toLowerCase()) > -1) {
-      //console.log("found " + element + " in stop words");
       delete dict[element];
     } else if (element.toLowerCase() === searchQuery) {
       delete dict[element];
@@ -253,12 +218,5 @@ function wordCount(tweets, searchQuery) {
   items.sort(function (first, second) {
     return second[1] - first[1];
   });
-  console.log(items.slice(0, 5));
-
-  // Convert back into dict for json
-  json_words = {};
-  items.forEach(element => {
-    json_words[element[0]] = element[1];
-  })
   return items.slice(0, 5);
 }

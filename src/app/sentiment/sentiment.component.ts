@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as CanvasJS from '../canvasjs.min';
-
 import { TwitterSearchService } from '../twitter-search.service';
-import * as jStat from '../jstat.min';
 
 
 @Component({
@@ -48,18 +46,8 @@ export class SentimentComponent implements OnInit {
     this.chart.render();
 
   }
-  updateChart(): void {
-    let jstat = jStat(this.scores);
-    const quartiles = jstat.quartiles();
-    const min = jstat.min();
-    const max = jstat.max();
-    this.values = [min, quartiles[0],quartiles[2],max,quartiles[1]];
-    this.chart.options.data[0].dataPoints = [{label: 'Tweets', y: this.values}];
-    this.chart.render();
-  }
   constructor(private twitterSearchService: TwitterSearchService) { }
 
-  //DATAPOINTS REPRESENTS QUARTILES
   ngOnInit() {
     this.chart = new CanvasJS.Chart('chartContainerSentiment', {
       animationEnabled: true,
